@@ -120,29 +120,34 @@ exports.deleteFacultyByID = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.updateFaculty = catchAsyncErrors(async (req, res, next) => {
-  const updatedFields = req.body;
+  const {editFacultyData,tablename} = req.body;
+  console.log(editFacultyData)
   const { id } = req.params;
-  const updateFieldsString = Object.keys(updatedFields)
-    .map((key) => `${key}="${updatedFields[key]}"`)
-    .join(", ");
-
-  const sql = `UPDATE faulty_joining SET ${updateFieldsString} WHERE id = '${Number(
-    id
-  )}';`;
-
-  db.query(sql, (err, result) => {
+  const numericId = Number(id);
+  const updateFieldsArray = Object.keys(editFacultyData).map((key) => `${key} = ?`);
+  const updateValuesArray = Object.values(editFacultyData);
+  let sql;
+  if(tablename=="salary"){
+    sql = `UPDATE faculty_salary SET ${updateFieldsArray.join(", ")} WHERE id = ?;`;
+  }
+  else{
+    sql = `UPDATE faculty_joining SET ${updateFieldsArray.join(", ")} WHERE id = ?;`;
+  }
+  updateValuesArray.push(numericId);
+  db.query(sql, updateValuesArray, (err, result) => {
     if (err) {
       console.error("Error during update:", err);
-      next(new ErrorHandler("Error during update", 500));
+      return next(new ErrorHandler("Error during update", 500));
     }
 
-    if (result.affectedRows > 0) {
+    if (result && result.affectedRows > 0) {
       res.status(200).json({ success: true, message: "Update successful" });
     } else {
-      next(new ErrorHandler("User not found or no changes applied", 404));
+      return next(new ErrorHandler("User not found or no changes applied", 404));
     }
   });
 });
+
 
 exports.facultiesJoining = catchAsyncErrors(async (req, res) => {
   const {

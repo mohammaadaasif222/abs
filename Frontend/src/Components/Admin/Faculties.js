@@ -16,6 +16,7 @@ import { AlertBox } from "../AlertBox";
 export default function Faculties() {
   const [salaries, setSalaries] = useState([]);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+  const [isEditPopupOpen2, setIsEditPopupOpen2] = useState(false);
   const [editFacultyData, setEditFacultyData] = useState({});
   const [isEditingSalary, setIsEditingSalary] = useState(false); // New state to differentiate between salary and joining edit
   const token = localStorage.getItem("token");
@@ -72,17 +73,24 @@ export default function Faculties() {
     setIsEditingSalary(isSalary);
     setIsEditPopupOpen(true);
   };
-
+  const handleEdit2 = (faculty, isSalary = false) => {
+    setEditFacultyData(faculty);
+    console.log(faculty);
+    setIsEditingSalary(isSalary);
+    setIsEditPopupOpen2(true);
+  };
   const closeEditPopup = () => {
     setIsEditPopupOpen(false);
+    setIsEditPopupOpen2(false);
+
     setEditFacultyData({});
   };
 
-  const handleSave = () => {
-    console.log(editFacultyData);
-    dispatch(updateFacultyEntry({ ...editFacultyData, token }));
+  const handleSave = (tablename) => {
+    dispatch(updateFacultyEntry({ editFacultyData,tablename, token }));
     closeEditPopup();
   };
+
 
   const renderTable = (category) => {
     const facultyByCategory = getFacultyByCategory(category);
@@ -140,7 +148,7 @@ export default function Faculties() {
                       Delete
                     </button>
                     <button
-                      onClick={() => handleEdit(faculty, false)}
+                      onClick={() => handleEdit2(faculty, false)}
                       className="py-1 px-3 bg-blue text-white"
                     >
                       Edit
@@ -326,7 +334,7 @@ export default function Faculties() {
                   onChange={(e) =>
                     setEditFacultyData({
                       ...editFacultyData,
-                      name: e.target.value,
+                      qualification: e.target.value,
                     })
                   }
                 />
@@ -340,7 +348,35 @@ export default function Faculties() {
                   onChange={(e) =>
                     setEditFacultyData({
                       ...editFacultyData,
-                      name: e.target.value,
+                      category: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">experience</label>
+                <input
+                  type="text"
+                  className="w-full border px-3 py-2"
+                  value={editFacultyData.experience}
+                  onChange={(e) =>
+                    setEditFacultyData({
+                      ...editFacultyData,
+                      experience: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">pay_scale</label>
+                <input
+                  type="text"
+                  className="w-full border px-3 py-2"
+                  value={editFacultyData.pay_scale}
+                  onChange={(e) =>
+                    setEditFacultyData({
+                      ...editFacultyData,
+                      pay_scale: e.target.value,
                     })
                   }
                 />
@@ -356,7 +392,139 @@ export default function Faculties() {
                 </button>
                 <button
                   type="button"
-                  onClick={handleSave}
+                  onClick={()=>handleSave("salary")}
+
+                  className="py-2 px-4 bg-green-300 text-white rounded"
+                >
+                  Save
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+{isEditPopupOpen2 && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-5 rounded-lg w-1/2">
+            <h2 className="text-xl font-bold mb-4">
+              {isEditingSalary ? "Edit Salary Details" : "Edit Faculty Details"}
+            </h2>
+            <form>
+              <div className="mb-4">
+                <label className="block text-gray-700">Name</label>
+                <input
+                  type="text"
+                  className="w-full border px-3 py-2"
+                  value={editFacultyData.name}
+                  onChange={(e) =>
+                    setEditFacultyData({
+                      ...editFacultyData,
+                      name: e.target.value,
+                    })
+                  }
+                />
+              </div>
+           
+              <div className="mb-4">
+                <label className="block text-gray-700">Designation</label>
+                <input
+                  type="text"
+                  className="w-full border px-3 py-2"
+                  value={editFacultyData.designation}
+                  onChange={(e) =>
+                    setEditFacultyData({
+                      ...editFacultyData,
+                      designation: e.target.value,
+                    })
+                  }
+                />
+              </div>
+        
+             
+              <div className="mb-4">
+                <label className="block text-gray-700">Qualification</label>
+                <input
+                  type="text"
+                  className="w-full border px-3 py-2"
+                  value={editFacultyData.qualification}
+                  onChange={(e) =>
+                    setEditFacultyData({
+                      ...editFacultyData,
+                      qualification: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">date of birth</label>
+                <input
+                  type="text"
+                  className="w-full border px-3 py-2"
+                  value={editFacultyData.date_of_birth}
+                  onChange={(e) =>
+                    setEditFacultyData({
+                      ...editFacultyData,
+                      date_of_birth: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Date of appointment</label>
+                <input
+                  type="text"
+                  className="w-full border px-3 py-2"
+                  value={editFacultyData.date_of_appointment}
+                  onChange={(e) =>
+                    setEditFacultyData({
+                      ...editFacultyData,
+                      date_of_appointment: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">date_of_retirement</label>
+                <input
+                  type="text"
+                  className="w-full border px-3 py-2"
+                  value={editFacultyData.date_of_retirement}
+                  onChange={(e) =>
+                    setEditFacultyData({
+                      ...editFacultyData,
+                      date_of_retirement: e.target.value,
+                    })
+                  }
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-gray-700">Category</label>
+                <input
+                  type="text"
+                  className="w-full border px-3 py-2"
+                  value={editFacultyData.category}
+                  onChange={(e) =>
+                    setEditFacultyData({
+                      ...editFacultyData,
+                      category: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              {/* Add more input fields as needed */}
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={closeEditPopup}
+                  className="py-2 px-4 bg-gray-500 text-white rounded mr-2"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={()=>handleSave("joining")}
                   className="py-2 px-4 bg-green-300 text-white rounded"
                 >
                   Save
