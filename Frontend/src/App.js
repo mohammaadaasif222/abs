@@ -67,6 +67,7 @@ import AdminRequitment from "./Components/Admin/AdminRequitment";
 import RecruitmentResult from "./Components/Pages/Recruitment/RecruitmentResult";
 import LabAndFaculties from "./Components/Pages/School/LabAndFaculties";
 import AdminFees from "./Components/Admin/AdminFees";
+import UploadNews from "./Components/Admin/UploadNews";
 function App() {
   return (
     <BrowserRouter>
@@ -119,6 +120,7 @@ function App() {
 
           <Route path="/admin" element={<AdminPageLayout />} />
           <Route path="/uploadfile" element={<UploadFile />} />
+          <Route path="/uploadnews" element={<UploadNews />} />
           <Route path="/uploadimage" element={<UploadImage />} />
           <Route path="/uploadvideo" element={<UploadVideo />} />
 

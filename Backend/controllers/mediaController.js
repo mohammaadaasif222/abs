@@ -209,7 +209,7 @@ exports.uploadGalleryImage = catchAsyncErrors(async (req, res, next) => {
       __dirname,
       "..",
       "..",
-      "frontend",
+      "Frontend",
       "public",
       "uploads",
       docType

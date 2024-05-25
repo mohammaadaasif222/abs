@@ -1,1 +1,1 @@
-export const baseUrl = 'https://gnkschool.info'
+export const baseUrl = 'https://api.gnkschool.info'
